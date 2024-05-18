@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('Front.html')
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 @app.route('/generate_signature', methods=['POST'])
 def generate_signature():
