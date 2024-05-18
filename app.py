@@ -13,7 +13,7 @@ SIGNATURES_DIR = os.getenv('SIGNATURES_DIR')
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('Front.html')
 
 @app.route('/generate_signature', methods=['POST'])
 def generate_signature():
