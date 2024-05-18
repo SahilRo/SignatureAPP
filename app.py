@@ -3,7 +3,8 @@ from flask import Flask, request, send_file
 from PIL import Image, ImageDraw, ImageFont
 import pytesseract
 from flask_cors import CORS
-
+from dotenv import load_dotenv
+load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
