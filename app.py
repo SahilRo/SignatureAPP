@@ -1,10 +1,12 @@
 from flask import Flask, request, send_file
 from PIL import Image, ImageDraw, ImageFont
 import os
+import pytesseract
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 @app.route('/generate_signature', methods=['POST'])
 def generate_signature():
     name = request.form.get('name')
@@ -13,7 +15,11 @@ def generate_signature():
     if name:
         image_path = create_signature_from_text(name)
     elif file:
-        image_path = process_signature_image(file)
+        extracted_text = extract_text_from_image(file)
+        if extracted_text:
+            image_path = create_signature_from_text(extracted_text)
+        else:
+            return 'No text found in the uploaded image', 400
     else:
         return 'No input provided', 400
 
@@ -39,15 +45,22 @@ def create_signature_from_text(name):
     image.save(image_path)
     return image_path
 
-def process_signature_image(file):
-    # Save the uploaded file
-    image_path = os.path.join(r"C:\Users\Sahil\Downloads", file.filename)
-    os.makedirs(r"C:\Users\Sahil\Downloads", exist_ok=True)
-    image = Image.open(image_path)
-    resized_image = image.resize((700, 200))
-    resized_image.save(image_path)
-    # Here you could add additional processing if needed
-    return image_path
+
+def extract_text_from_image(file):
+    # Save the uploaded file temporarily
+    temp_path = os.path.join('temp', file.filename)
+    os.makedirs('temp', exist_ok=True)
+    file.save(temp_path)
+
+    # Use pytesseract to extract text
+    image = Image.open(temp_path)
+    extracted_text = pytesseract.image_to_string(image)
+    print(extracted_text)
+    # Clean up temporary file
+    os.remove(temp_path)
+
+    return extracted_text.strip()
+
 
 if __name__ == '__main__':
     app.run(debug=False,host='0.0.0.0')
