@@ -1,5 +1,6 @@
 flask
 flask_cors
+python-dotenv==0.19.2
 packaging==24.0
 pillow==10.3.0
 pygame==2.5.2
