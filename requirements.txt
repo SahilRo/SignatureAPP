@@ -1,5 +1,0 @@
-pytesseract
-PIL
-flask
-flask_cors
-os
