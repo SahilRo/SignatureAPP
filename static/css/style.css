@@ -1,0 +1,67 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: black; 
+    color: white; 
+    padding:0 px;
+    margin-left: 15 px;
+    margin-right: 15 px;
+}
+#abc{
+    width: 55vw;
+    border-radius: 20px;
+    box-shadow: 0 0 0 0.2rem;
+    margin-top: 10px;
+}
+.form-control {
+    background-color: black; 
+    border-color: white; 
+    color: white; 
+}
+.form-control:focus {
+    border-color: #1976d2; 
+    box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25); 
+}
+.btn-primary {
+    background-color: #1976d2; 
+    border-color: #1976d2; 
+}
+.btn-primary:hover {
+    background-color: #1565c0; 
+    border-color: #1565c0;
+}
+.btn-success {
+    background-color: #4caf50; 
+    border-color: #4caf50; 
+}
+.btn-success:hover {
+    background-color: #45a049;
+    border-color: #45a049;
+}
+#signaturePreview {
+    text-align: center;
+    width: 50 px;
+}
+
+#nameInput::placeholder {
+    color: white; 
+}
+#signaturePreview img {
+    max-width: 100%;
+    height: 10vh;
+}
+/* Adjust margins for smaller screens */
+@media (max-width: 350px) {
+    #abc{
+        width: 75vw;
+    }
+    #downloadButton{
+        height: 33px;
+        font-size:small;
+        margin-bottom: 10 px;
+        text-align: center;
+    }
+}
