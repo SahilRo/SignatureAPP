@@ -3,13 +3,21 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 import pytesseract
 from flask_cors import CORS
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
 CORS(app)
+
+pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_CMD')
+FONT_PATH = os.getenv('FONT_PATH')
+SIGNATURES_DIR = os.getenv('SIGNATURES_DIR')
+
 @app.route('/')
 def index():
-    return render_template('Front.html')
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    return render_template('index.html')
+
 @app.route('/generate_signature', methods=['POST'])
 def generate_signature():
     name = request.form.get('name')
@@ -33,21 +41,18 @@ def create_signature_from_text(name):
     image = Image.new('RGB', (650, 200), 'white')
     draw = ImageDraw.Draw(image)
     # Load a font
-    font_path = os.path.join(os.path.dirname(__file__), 'fonts', 'Fashioniqa.ttf')
-
     try:
-        font = ImageFont.truetype(font_path, 150)
+        font = ImageFont.truetype(FONT_PATH, 150)
     except OSError:
         print("Font file not found or cannot be opened.")
         raise
     # Draw the text
     draw.text((50, 40), name, fill='black', font=font)
     # Save the image
-    image_path = f'signatures/{name}.jpeg'
-    os.makedirs(r"C:\Users\Sahil\Downloads\signatures", exist_ok=True)
+    image_path = os.path.join(SIGNATURES_DIR, f'{name}.jpeg')
+    os.makedirs(SIGNATURES_DIR, exist_ok=True)
     image.save(image_path)
     return image_path
-
 
 def extract_text_from_image(file):
     # Save the uploaded file temporarily
@@ -64,7 +69,5 @@ def extract_text_from_image(file):
 
     return extracted_text.strip()
 
-
 if __name__ == '__main__':
-    app.run(debug=False,host='0.0.0.0')
-
+    app.run(debug=False, host='0.0.0.0')
